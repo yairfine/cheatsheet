@@ -53,8 +53,8 @@ errorNoFile="error - no cheatsheet file available -> you have to add a first com
 errorNoMode="error - no mode set"
 errorAdd="error - this command exists already in the cheatsheet"
 errorRemove="error - this line is not available - cheatsheet has only "
-version1="version:                 2.1.0"
-version2="date of last change:     20170906"
+version1="version:                 2.2.0"
+version2="date of last change:     20240422"
 version3="author:                  Michael Wellner (@m1well)"
 
 ### file ###
