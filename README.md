@@ -31,6 +31,18 @@ list of greped commands (with line number)
 01: docker exec -it {1} /bin/bash # enter running docker container
 //-----------------------------//</pre>
 
+## Setup
+
+```shell
+# clone and install
+git clone <repo-url>
+cd cheatsheet
+chmod u+x install.sh
+sudo ./install.sh
+
+# print version
+cs -v
+```
 
 ## Usage
 #### cheatsheet.sh [-a|-l|-e|-r|-b|-i|-h|-v]
