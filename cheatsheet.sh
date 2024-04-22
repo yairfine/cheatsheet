@@ -50,6 +50,7 @@ successBackup="successfully created backup of the cheatsheet"
 successImport="successfully imported following amount of commands from the cheatsheet backup"
 successExecute="now executing following command (possible output below cheatsheet endline)"
 errorNoFile="error - no cheatsheet file available -> you have to add a first command to create the file"
+errorNoDir="error - directory not exists, please provide a valid directory"
 errorNoMode="error - no mode set"
 errorAdd="error - this command exists already in the cheatsheet"
 errorRemove="error - this line is not available - cheatsheet has only "
@@ -131,6 +132,9 @@ printError() {
     "file_no_file")
       printf "${BACKGROUND_RED}${errorNoFile}${BACKGROUND_DEFAULT}${BR}"
       ;;
+    "directory_not_exists")
+      printf "${BACKGROUND_RED}${errorNoDir}${BACKGROUND_DEFAULT}${BR}"
+      ;;
     "mode")
       printf "${BACKGROUND_RED}${errorNoMode}${BACKGROUND_DEFAULT}${BR}"
       ;;
@@ -150,6 +154,10 @@ exitScript() {
 ### logical functions ###
 isFileExisting() {
   if [ -e "${cheatsheetFile}" ] ; then return 0 ; fi
+  return 1
+}
+isDirectoryExists() {
+  if [ -d "${1}" ] ; then return 0 ; fi
   return 1
 }
 isStringEqual() {
@@ -298,8 +306,12 @@ while getopts "a:l:e:r:b:i:hv" arg ; do
       exitScript
       ;;
     b)
-      cp "${cheatsheetFile}" "${OPTARG}"
-      printSuccess "backup"
+      if (isDirectoryExists "${OPTARG}") ; then
+        cp "${cheatsheetFile}" "${OPTARG}"
+        printSuccess "backup"
+      else
+        printError "directory_not_exists"
+      fi
       exitScript
       ;;
     i)
