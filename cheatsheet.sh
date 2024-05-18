@@ -196,7 +196,7 @@ printGreppedList() {
   local number=""
   local command=""
   # grep complete list and itereate over this list
-  grep -n "${1}" "${2}" | while read -r greppedList ; do
+  grep --line-number --ignore-case "${1}" "${2}" | while read -r greppedList ; do
     for ln in "${greppedList}" ; do
       # split the line to number and command
       number=$(echo ${ln} | cut -d ':' -f 1)
