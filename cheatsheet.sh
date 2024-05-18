@@ -3,10 +3,10 @@
 #title                  :cheatsheet.sh
 #description            :This script is a cheatsheet for e.g. git or docker commands or whatever.
 #author                 :Michael Wellner (@m1well) twitter.m1well.de
-#date of creation       :20170824
-#date of last change    :20190305
-#version                :2.3.0
-#usage                  :cheatsheet.sh [-a|-l|-e|-r|-b|-i|-h|-v]
+#date of creation       :2017-08-24
+#date of last change    :2024-05-18
+#version                :3.0.0
+#usage                  :cheatsheet.sh [-a|-l|-g|-e|-r|-b|-i|-h|-v]
 #notes                  :it would be most suitable to create an alias
 ###
 
@@ -28,7 +28,8 @@ usageLine="//--- "
 usageDescription="//--- Store your commands to a cheatsheet and find & execute them easily"
 usageReadme="//--- Please checkout the README.md file!"
 usageSum="//--- Usage: cheatsheet.sh [-a|-g|-l|-e|-r|-b|-i|-h|-v]"
-usageL="//---    -l list [param]         list your commands including this string - set param 'all' to list all commands"
+usageL="//---    -l                      list all commands"
+usageG="//---    -g grep [param]         grep commands including this string"
 usageA="//---    -a add [param]          add a new command (you can also append a comment after a # sign)"
 usageE="//---    -e execute [param]      execute a command by linenumber - it's possible to add another parameter with apostrophes after a comma"
 usageR="//---    -r remove [param]       remove a command by linenumber"
@@ -54,8 +55,8 @@ errorNoDir="error - directory not exists, please provide a valid directory"
 errorNoMode="error - no mode set"
 errorAdd="error - this command exists already in the cheatsheet"
 errorRemove="error - this line is not available - cheatsheet has only "
-version1="version:                 2.2.0"
-version2="date of last change:     20240422"
+version1="version:                 3.0.0"
+version2="date of last change:     20240518"
 version3="author:                  Michael Wellner (@m1well)"
 
 ### file ###
@@ -75,6 +76,7 @@ printUsage() {
   printf "${usageLine}${BR}"
   printf "${usageSum}${BR}"
   printf "${usageL}${BR}"
+  printf "${usageG}${BR}"
   printf "${usageA}${BR}"
   printf "${usageR}${BR}"
   printf "${usageE}${BR}"
@@ -233,8 +235,8 @@ executeTwoCommands() {
 printStartLinesOfCheatsheet
 
 ### check input opts ###
-# [-a|-l|-e|-r|-b|-i|-h|-v]
-while getopts "a:l:e:r:b:i:hv" arg ; do
+# [-a|-l|-g|-e|-r|-b|-i|-h|-v]
+while getopts "a:g:e:r:b:i:lhv" arg ; do
   case $arg in
     a)
       if isFileExisting ; then
@@ -253,13 +255,19 @@ while getopts "a:l:e:r:b:i:hv" arg ; do
       ;;
     l)
       if isFileExisting ; then
-        if isStringEqual "${OPTARG}" "all" ; then
-          printSuccess "list_all"
-          printCompleteList "${cheatsheetFile}"
-        else
-          printSuccess "list_grep"
-          printGreppedList "${OPTARG}" "${cheatsheetFile}"
-        fi
+        printSuccess "list_all"
+        printCompleteList "${cheatsheetFile}"
+      else
+        # no file available
+        printError "file_no_file"
+        printUsage
+      fi
+      exitScript
+      ;;
+    g)
+      if isFileExisting ; then
+        printSuccess "list_grep"
+        printGreppedList "${OPTARG}" "${cheatsheetFile}"
       else
         # no file available
         printError "file_no_file"
