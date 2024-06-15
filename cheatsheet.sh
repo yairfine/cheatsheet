@@ -329,7 +329,7 @@ while getopts "a:g:e:r:b:i:lhv" arg ; do
       ;;
     i)
       i=0
-      while read importFileLine ; do
+      while read -r importFileLine ; do
         if isFileExisting ; then
           if !(isStringInFile "${importFileLine}" "${cheatsheetFile}") ; then
             # if command is not in the file then import it
