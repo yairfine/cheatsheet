@@ -199,13 +199,9 @@ printGreppedList() {
   grep --line-number --ignore-case "${1}" "${2}" | while read -r greppedList ; do
     for ln in "${greppedList}" ; do
       # split the line to number and command
-      number=$(echo ${ln} | cut -d ':' -f 1)
-      if (( ${number} < 10 )) ; then
-        command="${ln:2:${#ln}-1}"
-      else
-        command="${ln:3:${#ln}-1}"
-      fi
-      printf '%02d:  %s\n' $number "${command}"
+      number=$(echo ${ln} | cut -d ':' -f1)
+      command=$(echo ${ln} | cut -d ':' -f2-)
+      printf '%02u: %s\n' $number "${command}"
     done
   done
 }
@@ -214,7 +210,7 @@ printCompleteList() {
   while read -r completeList ; do
     for completeLine in "${completeList}" ; do
       counter=$((counter+1))
-      printf '%02d: %s\n' $counter "${completeLine}"
+      printf '%02u: %s\n' $counter "${completeLine}"
     done
   done < "${1}"
 }
