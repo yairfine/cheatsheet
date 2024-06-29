@@ -194,14 +194,18 @@ removeOneCommand() {
 }
 printGreppedList() {
   local number=""
-  local command=""
+  local cmd=""
+  local comment=""
   # grep complete list and itereate over this list
   grep --line-number --ignore-case "${1}" "${2}" | while read -r greppedList ; do
     for ln in "${greppedList}" ; do
-      # split the line to number and command
+      # split the line to number, command and comment
       number=$(echo ${ln} | cut -d ':' -f1)
-      command=$(echo ${ln} | cut -d ':' -f2-)
-      printf '%02u: %s\n' $number "${command}"
+      cmd=$(echo ${ln} | cut -d ':' -f2- | cut -d '#' -f1)
+      comment=$(echo ${ln} | cut -d '#' -s -f2-)
+
+      printf "${FONT_GREEN}%02u: %s${BR}${FONT_NONE}" "${number}" "${comment}"
+      printf "%s${BR}${BR}" "${cmd}"
     done
   done
 }
@@ -262,7 +266,6 @@ while getopts "a:g:e:r:b:i:lhv" arg ; do
       ;;
     g)
       if isFileExisting ; then
-        printSuccess "list_grep"
         printGreppedList "${OPTARG}" "${cheatsheetFile}"
       else
         # no file available
