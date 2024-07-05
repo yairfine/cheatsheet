@@ -204,7 +204,7 @@ printGreppedList() {
       cmd=$(echo ${ln} | cut -d ':' -f2- | cut -d '#' -f1)
       comment=$(echo ${ln} | cut -d '#' -s -f2- | awk '{$1=$1;print}')
 
-      printf "${FONT_GREEN}%02u: %s${BR}${FONT_NONE}" "${number}" "${comment}"
+      printf "${FONT_GREEN}# %s${BR}${FONT_NONE}" "${comment}"
       printf "%s${BR}${BR}" "${cmd}"
     done
   done
