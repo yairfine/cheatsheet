@@ -202,7 +202,7 @@ printGreppedList() {
       # split the line to number, command and comment
       number=$(echo ${ln} | cut -d ':' -f1)
       cmd=$(echo ${ln} | cut -d ':' -f2- | cut -d '#' -f1)
-      comment=$(echo ${ln} | cut -d '#' -s -f2-)
+      comment=$(echo ${ln} | cut -d '#' -s -f2- | awk '{$1=$1;print}')
 
       printf "${FONT_GREEN}%02u: %s${BR}${FONT_NONE}" "${number}" "${comment}"
       printf "%s${BR}${BR}" "${cmd}"
